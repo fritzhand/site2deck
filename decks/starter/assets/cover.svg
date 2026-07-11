@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 900">
+  <!-- Placeholder hero: warm-dark geometric field. It sits under the cover's
+       ink gradient (heavier on the left, where the title lives), so the
+       composition leans right. Replace with a photo from the brand's site. -->
+  <rect width="1600" height="900" fill="#262520"/>
+  <path stroke="#34322B" stroke-width="1" d="M100.5 0v900M200.5 0v900M300.5 0v900M400.5 0v900M500.5 0v900M600.5 0v900M700.5 0v900M800.5 0v900M900.5 0v900M1000.5 0v900M1100.5 0v900M1200.5 0v900M1300.5 0v900M1400.5 0v900M1500.5 0v900M0 100.5h1600M0 200.5h1600M0 300.5h1600M0 400.5h1600M0 500.5h1600M0 600.5h1600M0 700.5h1600M0 800.5h1600"/>
+  <g fill="none" stroke="#726E60">
+    <circle cx="1150" cy="360" r="90" stroke-width="2"/>
+    <circle cx="1150" cy="360" r="170" stroke-width="1.5"/>
+    <circle cx="1150" cy="360" r="250" stroke-width="1"/>
+    <circle cx="1150" cy="360" r="330" stroke-width="0.75"/>
+  </g>
+  <circle cx="1150" cy="360" r="34" fill="#8D8877"/>
+  <path fill="#3B392F" d="M1150 690a170 170 0 0 1 170 170h-170z"/>
+  <path fill="#565345" d="M1150 690a170 170 0 0 0-170 170h170z"/>
+  <path stroke="#4A4840" stroke-width="2" d="M40 900 240 700M80 900 280 700M120 900 320 700M160 900 360 700M200 900 400 700M240 900 440 700"/>
+  <rect x="1420" y="120" width="46" height="46" fill="#565345"/>
+  <rect x="1482" y="182" width="24" height="24" fill="#3B392F"/>
+</svg>

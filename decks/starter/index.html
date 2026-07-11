@@ -1,0 +1,374 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<title>Starter Deck — site2deck</title>
+<meta name="description" content="The site2deck starter template: a neutral-skin tour of the deck engine's component vocabulary. Every slide teaches the component it is built with." />
+<meta name="robots" content="noindex, nofollow" />
+<link rel="icon" type="image/svg+xml" href="assets/favicon.svg" />
+<link rel="stylesheet" href="tokens.css" />
+<link rel="stylesheet" href="../../shared/deck.css" />
+</head>
+<body>
+<div class="progress" id="progress"></div>
+<div class="stage" id="stage">
+
+  <!-- ═══════════ 01 · COVER ═══════════ -->
+  <section class="slide cover active">
+    <div class="cover-photo"><img src="assets/cover.svg" alt="" /></div>
+    <div class="mark on-dark">
+      <img class="mark-logo" src="assets/logo.svg" alt="Starter Deck" />
+      <span class="mark-div"></span>
+      <span class="mark-txt"><b>Starter Deck</b><i>site2deck</i></span>
+    </div>
+    <div class="title-wrap">
+      <div class="title-main">
+        <div class="kicker"><span class="num">01</span> Starter template</div>
+        <h1>The deck engine, wearing its <em>neutral skin</em>.</h1>
+        <p class="title-sub">
+          This is the template every brand deck starts from — and a live tour of the component
+          vocabulary. <b>Every slide teaches the component it is built with</b>: keep the structure,
+          replace the copy, and let a brand's tokens.css re-dress the whole thing.
+        </p>
+        <div class="chips">
+          <span class="chip">Single-file builds</span>
+          <span class="chip">Opens from file://</span>
+          <span class="chip">Prints to PDF</span>
+          <span class="chip">No webfonts, no network</span>
+        </div>
+      </div>
+      <div class="slide-foot"><span>site2deck · Starter Deck</span><span>Template — replace this line</span></div>
+    </div>
+  </section>
+
+  <!-- ═══════════ 02 · HOW THIS DECK WORKS ═══════════ -->
+  <section class="slide has-grid">
+    <div class="title-wrap">
+      <div class="title-main">
+        <div class="kicker"><span class="num">02</span> The method</div>
+        <h2>Five steps from <em>website to deck</em>.</h2>
+        <p class="title-sub" style="max-width:72ch;">
+          <b>1 · Extract</b> the design system straight off the company's website — exact colors,
+          fonts, logo, iconography. <b>2 · Skin</b>: encode it as a tokens.css over the brand-neutral
+          engine in shared/. <b>3 · Author</b> slides from the component vocabulary this deck
+          demonstrates — no new CSS. <b>4 · Build</b> to one self-contained HTML that opens offline
+          and prints to PDF. <b>5 · Iterate</b> by visual spot-check in the browser.
+        </p>
+        <div class="chips">
+          <span class="chip">Extract</span>
+          <span class="chip">Skin</span>
+          <span class="chip">Author</span>
+          <span class="chip">Build</span>
+          <span class="chip">Iterate</span>
+        </div>
+      </div>
+      <div class="slide-foot"><span>site2deck · Starter Deck</span><span>The method</span></div>
+    </div>
+  </section>
+
+  <!-- ═══════════ 03 · AGENDA (.menu) ═══════════ -->
+  <section class="slide">
+    <div class="kicker"><span class="num">03</span> Component — the table</div>
+    <h2>What this deck <em>teaches</em>, slide by slide.</h2>
+    <p class="lede" style="max-width:78ch;">
+      The .menu table is the deck's register voice — agendas, tiers, comparisons. Header cells speak
+      tracked uppercase in the mono face; tr.hl tints the row that matters. Here, the section up next.
+    </p>
+    <table class="menu">
+      <thead><tr><th style="width:22%;">Section</th><th>What it demonstrates</th><th style="width:30%;">Key classes</th></tr></thead>
+      <tbody>
+        <tr><td class="mot">Cover &amp; titles</td><td>Photo-hero cover, grid-textured dividers</td><td>.slide.cover · .has-grid</td></tr>
+        <tr class="hl"><td class="mot">Numbers</td><td>Stat tiles, the dark banner, the TBD marker</td><td>.stats · .banner · .tbd</td></tr>
+        <tr><td class="mot">Cards</td><td>The card family and its accent variants</td><td>.card · .acc–.acc-4 · .feature</td></tr>
+        <tr><td class="mot">Media</td><td>Splits and accent-washed photo cards</td><td>.split · .pcard</td></tr>
+        <tr><td class="mot">Icons &amp; lists</td><td>Feature rows, category tiles, clean lists</td><td>.feat · .cats · ul.clean</td></tr>
+        <tr><td class="mot">Sequence</td><td>Roadmap lanes and roster columns</td><td>.road · .who</td></tr>
+        <tr><td class="mot">Sharing</td><td>Internal-only slides and the standalone build</td><td>data-internal · build.mjs</td></tr>
+      </tbody>
+    </table>
+    <div class="slide-foot"><span>site2deck · Starter Deck</span><span>Agenda</span></div>
+  </section>
+
+  <!-- ═══════════ 04 · STATS + BANNER ═══════════ -->
+  <section class="slide">
+    <div class="kicker"><span class="num">04</span> Component — stat tiles</div>
+    <h2>Three or four numbers <em>carry the argument</em>.</h2>
+    <div style="flex:1 1 auto; display:flex; flex-direction:column; justify-content:center;">
+      <p class="lede" style="max-width:80ch;">
+        Stat tiles hold your load-bearing numbers: a big display-font value over a one-line label.
+        When a number isn't confirmed yet, it wears the <b>TBD marker</b> — loud on purpose, so a
+        draft can never pass for final.
+      </p>
+      <div class="stats">
+        <div class="stat"><div class="v">1280×720</div><div class="l">the fixed stage every slide lays out on — type scales with cqi clamps, never hardcoded px</div></div>
+        <div class="stat"><div class="v">1</div><div class="l">self-contained HTML file per build — attach it, open it offline, print it</div></div>
+        <div class="stat"><div class="v">0</div><div class="l">network requests once built — fonts, icons, and images ship inside the deck</div></div>
+        <div class="stat"><div class="v"><span class="tbd">TBD</span></div><div class="l">your fourth number — wrap anything unverified exactly like this until a source confirms it</div></div>
+      </div>
+      <div class="eyebrow" style="margin-top:clamp(18px,2.6cqi,30px);">The dark register — .banner</div>
+      <div class="banner" style="margin-top:0;">
+        <div><div class="bv">Borders, not shadows</div><div class="bl">Depth comes from hairline borders and one ink register. This band is the ink.</div></div>
+        <div><div class="bv">No invented numbers</div><div class="bl">Every figure in a deck is real or marked TBD — there is no third state.</div></div>
+        <div><div class="bv">Print-ready</div><div class="bl">Cmd+P exports the whole deck as a 1280×720 PDF, one page per slide.</div></div>
+      </div>
+    </div>
+    <div class="slide-foot"><span>site2deck · Starter Deck</span><span>Stat tiles</span></div>
+  </section>
+
+  <!-- ═══════════ 05 · CARDS ═══════════ -->
+  <section class="slide">
+    <div class="kicker"><span class="num">05</span> Component — the card family</div>
+    <h2>Cards are the workhorse. <em>Accents do the sorting.</em></h2>
+    <div class="cols-3 fill-v" style="gap:clamp(12px,1.5cqi,18px);">
+      <div class="card acc"><div class="ck">Accent 1 · .acc</div><h3>The primary voice</h3><p>Top border and kicker take --accent. A .ck kicker, a display-font h3, one short paragraph — that is the whole anatomy.</p></div>
+      <div class="card acc-2"><div class="ck">Accent 2 · .acc-2</div><h3>First support hue</h3><p>Use the support accents to sort cards into families — themes, phases, options — not to decorate.</p></div>
+      <div class="card acc-3"><div class="ck">Accent 3 · .acc-3</div><h3>Second support hue</h3><p>Each variant re-keys the border and kicker; the body type stays ink so the grid reads as one system.</p></div>
+      <div class="card acc-4"><div class="ck">Accent 4 · .acc-4</div><h3>Third support hue</h3><p>Four accents is the ceiling. If a slide needs a fifth category, the slide needs a rethink.</p></div>
+      <div class="card"><div class="ck">Plain · .card</div><h3>No top border</h3><p>The unaccented card is for supporting matter that shouldn't compete.</p><p class="emp">The .emp line sits pinned to the card's foot — a caveat, a source, a date.</p></div>
+      <div class="card feature"><div class="ck">Featured · .feature</div><h3>The headline card</h3><p>The one card allowed a tinted background — --color-primary-light with a primary border. At most one per slide.</p></div>
+    </div>
+    <div class="slide-foot"><span>site2deck · Starter Deck</span><span>Cards</span></div>
+  </section>
+
+  <!-- ═══════════ 06 · SPLIT ═══════════ -->
+  <section class="slide">
+    <div class="kicker"><span class="num">06</span> Component — the split</div>
+    <h2>Half media, <em>half argument</em>.</h2>
+    <div class="split">
+      <div class="split-media"><img src="assets/split.svg" alt="Placeholder geometric plate standing in for brand photography" /></div>
+      <div style="display:flex; flex-direction:column; justify-content:center;">
+        <p class="lede">
+          The split pairs one image with the case it supports. The media box is a bordered,
+          rounded frame; the content column centers itself vertically.
+        </p>
+        <ul class="clean" style="margin-top:clamp(14px,2cqi,22px);">
+          <li><b>The frame crops, never squashes</b> — object-fit: cover fills the box at any aspect ratio.</li>
+          <li><b>ul.clean is the list voice</b> — accent-dot bullets, a bold lead-in, one line of support each.</li>
+          <li><b>Alternate sides across slides</b> — media left here, media right on the next split, so a long deck keeps a rhythm.</li>
+        </ul>
+        <p class="footnote" style="margin-top:14px;">assets/split.svg is a placeholder — swap in a photo from the brand's own site and keep the alt text honest.</p>
+      </div>
+    </div>
+    <div class="slide-foot"><span>site2deck · Starter Deck</span><span>The split</span></div>
+  </section>
+
+  <!-- ═══════════ 07 · PHOTO CARDS ═══════════ -->
+  <section class="slide">
+    <div class="kicker"><span class="num">07</span> Component — photo cards</div>
+    <h2>Copy on photography, <em>legible by design</em>.</h2>
+    <p class="lede" style="max-width:80ch;">
+      Each .pcard variant washes its image with one of the skin's accents, darkening to near-opaque
+      behind the caption — so white type never gambles on what the photo is doing.
+    </p>
+    <div class="cols-3 fill-v stretch" style="margin-top:clamp(12px,1.6cqi,20px);">
+      <div class="pcard p-1"><img src="assets/pcard-1.svg" alt="" /><div class="pcard-grad"></div><div class="pcard-body"><div class="pk">Wash · .p-1</div><h3>Primary accent</h3><p>The gradient runs --accent-rgb down into --accent-deep-rgb.</p></div></div>
+      <div class="pcard p-2"><img src="assets/pcard-2.svg" alt="" /><div class="pcard-grad"></div><div class="pcard-body"><div class="pk">Wash · .p-2</div><h3>Second accent</h3><p>Same geometry, keyed to --accent-2-rgb. Use a trio to compare themes.</p></div></div>
+      <div class="pcard p-3"><img src="assets/pcard-3.svg" alt="" /><div class="pcard-grad"></div><div class="pcard-body"><div class="pk">Wash · .p-3</div><h3>Third accent</h3><p>--accent-3-rgb, falling to ink at the base. Plain .pcard washes to pure ink.</p></div></div>
+    </div>
+    <div class="slide-foot"><span>site2deck · Starter Deck</span><span>Photo cards</span></div>
+  </section>
+
+  <!-- ═══════════ 08 · FEATURE ROWS + CATEGORY TILES ═══════════
+       The starter ships no icon webfont, so .fi and .cat slots hold plain
+       geometric glyph characters (font-style reset inline, since <i> defaults
+       to italic). Brand decks self-host the source site's icon font in
+       assets/ — e.g. a brand deck that bundles Bootstrap Icons writes
+       <i class="bi bi-basket"></i> in these same slots. -->
+  <section class="slide">
+    <div class="kicker"><span class="num">08</span> Component — icons</div>
+    <h2>An icon language <em>without an icon font</em>.</h2>
+    <div style="flex:1 1 auto; display:flex; flex-direction:column; justify-content:center; gap:clamp(18px,2.8cqi,36px); margin-top:clamp(10px,1.6cqi,20px);">
+      <div class="cats" style="margin-top:0;">
+        <div class="cat"><i style="font-style:normal;">◐</i><span>One glyph</span></div>
+        <div class="cat"><i style="font-style:normal;">◆</i><span>One label</span></div>
+        <div class="cat"><i style="font-style:normal;">●</i><span>Six across</span></div>
+        <div class="cat"><i style="font-style:normal;">▲</i><span>Wraps to three</span></div>
+        <div class="cat"><i style="font-style:normal;">■</i><span>Accent color</span></div>
+        <div class="cat"><i style="font-style:normal;">◈</i><span>Surface fill</span></div>
+      </div>
+      <div class="cols" style="margin-top:0; gap:clamp(20px,2.6cqi,40px);">
+        <div class="feat">
+          <div class="fi">◆</div>
+          <div><div class="ft">Feature rows — .feat</div><div class="fd">Icon box, bold title, one-line description. Four to six of these make a slide.</div></div>
+        </div>
+        <div class="feat c-2">
+          <div class="fi">●</div>
+          <div><div class="ft">Variants take the support accents</div><div class="fd">.feat.c-2 and .feat.c-3 re-key the icon box; the type stays ink.</div></div>
+        </div>
+        <div class="feat c-3">
+          <div class="fi">▲</div>
+          <div><div class="ft">The starter uses plain glyphs</div><div class="fd">No icon webfont ships with the template — geometric characters stand in.</div></div>
+        </div>
+        <div class="feat">
+          <div class="fi">■</div>
+          <div><div class="ft">Brand decks self-host real icons</div><div class="fd">Bundle the site's icon font into assets/, then swap these glyphs for &lt;i class="bi bi-*"&gt; tags.</div></div>
+        </div>
+      </div>
+    </div>
+    <div class="slide-foot"><span>site2deck · Starter Deck</span><span>Icons</span></div>
+  </section>
+
+  <!-- ═══════════ 09 · ROADMAP ═══════════ -->
+  <section class="slide">
+    <div class="kicker"><span class="num">09</span> Component — roadmap lanes</div>
+    <h2>Extract, author, ship — <em>in lanes</em>.</h2>
+    <p class="lede" style="max-width:78ch;">
+      The .road grid puts a tracked-uppercase timeframe over a heading and a short list, three lanes
+      under one rule. It happens to be the workflow for this very repo.
+    </p>
+    <div class="road fill-v">
+      <div class="ph">
+        <div class="pt">First hour · extract</div>
+        <h4>Skin the engine</h4>
+        <ul class="clean"><li>Run node extract.mjs &lt;url&gt; against the brand's site</li><li>Spot-check tokens.css next to the live site</li><li>Swap in the real logo and a hero photo</li></ul>
+      </div>
+      <div class="ph">
+        <div class="pt">First day · author</div>
+        <h4>Write the slides</h4>
+        <ul class="clean"><li>Start from these slides; keep the kicker → h2 → lede frame</li><li>Compose from the component vocabulary, not new CSS</li><li>Mark every unconfirmed number TBD</li></ul>
+      </div>
+      <div class="ph">
+        <div class="pt">Ship · build</div>
+        <h4>Build and share</h4>
+        <ul class="clean"><li>node build.mjs your-deck — one standalone file</li><li>Add --public to strip internal slides</li><li>Print to PDF straight from the browser</li></ul>
+      </div>
+    </div>
+    <div class="slide-foot"><span>site2deck · Starter Deck</span><span>Roadmap</span></div>
+  </section>
+
+  <!-- ═══════════ 10 · SHARING TIERS (.menu again, as a comparison) ═══════════ -->
+  <section class="slide">
+    <div class="kicker"><span class="num">10</span> Sharing — build outputs</div>
+    <h2>One deck, <em>three files</em>.</h2>
+    <div style="flex:1 1 auto; display:flex; flex-direction:column; justify-content:center;">
+      <p class="lede" style="max-width:80ch;">
+        The builder inlines everything — styles, script, fonts, images — into a single HTML file you
+        can attach to an email. The highlighted row is the file most people should receive.
+      </p>
+      <table class="menu">
+        <thead><tr><th style="width:30%;">Output</th><th>What it is</th><th style="width:26%;">Send it to</th></tr></thead>
+        <tbody>
+          <tr><td class="mot">index.html</td><td>The working copy — needs the repo beside it (shared/ engine, assets/).</td><td>Nobody. It's your editing surface.</td></tr>
+          <tr class="hl"><td class="mot">starter-standalone.html</td><td>One self-contained file, every reference inlined. Opens offline, prints to PDF.</td><td>The client, the team, anyone.</td></tr>
+          <tr><td class="mot">starter-public.html</td><td>The standalone, minus every slide tagged data-internal.</td><td>Wider circulation.</td></tr>
+        </tbody>
+      </table>
+      <p class="footnote" style="margin-top:14px;">Generated files are git-ignored. Rebuild them any time: node build.mjs starter, plus --public for the trimmed cut.</p>
+    </div>
+    <div class="slide-foot"><span>site2deck · Starter Deck</span><span>Build outputs</span></div>
+  </section>
+
+  <!-- ═══════════ 11 · ROSTER (.who) ═══════════ -->
+  <section class="slide">
+    <div class="kicker"><span class="num">11</span> Component — the roster</div>
+    <h2>Six files, <em>one clear job each</em>.</h2>
+    <p class="lede" style="max-width:78ch;">
+      The .who entry is a name over a role — built for teams and contributors, equally good as a
+      manifest. Top row travels with the deck; bottom row is the shared machinery.
+    </p>
+    <div class="cols-3 fill-v" style="gap:clamp(18px,2.4cqi,32px);">
+      <div class="who"><div class="wn">tokens.css</div><div class="wr">The brand skin — colors, fonts, radii. The only stylesheet that changes per brand.</div></div>
+      <div class="who"><div class="wn">index.html</div><div class="wr">The slides, authored by hand from the component vocabulary this deck demonstrates.</div></div>
+      <div class="who"><div class="wn">assets/ &amp; fonts/</div><div class="wr">Per-deck images, icons, and woff2 files — so a deck folder stays portable.</div></div>
+      <div class="who"><div class="wn">shared/deck.css</div><div class="wr">The engine — stage geometry, components, print block. Zero brand values.</div></div>
+      <div class="who"><div class="wn">shared/deck.js</div><div class="wr">Navigation — keys, click zones, touch, deep links, and the page counter.</div></div>
+      <div class="who"><div class="wn">build.mjs</div><div class="wr">The inliner — folds a deck and its assets into one standalone HTML file.</div></div>
+    </div>
+    <div class="slide-foot"><span>site2deck · Starter Deck</span><span>The roster</span></div>
+  </section>
+
+  <!-- ═══════════ 12 · INTERNAL-ONLY (stripped by `node build.mjs starter --public`) ═══════════ -->
+  <section class="slide" data-internal>
+    <div class="kicker"><span class="num">12</span> Sharing — internal slides</div>
+    <h2>This slide never leaves <em>the building</em>.</h2>
+    <div class="split">
+      <div style="display:flex; flex-direction:column; justify-content:center;">
+        <p class="lede">
+          Add the <b>data-internal</b> attribute to a slide's &lt;section&gt; tag and the public
+          build drops the whole slide — markup, images, speaker candor and all.
+        </p>
+        <ul class="clean" style="margin-top:clamp(14px,2cqi,20px);">
+          <li><b>Keep the working deck honest</b> — guardrails, open questions, and draft economics live here.</li>
+          <li><b>One source file, two audiences</b> — no forked decks quietly drifting apart.</li>
+          <li><b>The counter self-corrects</b> — deck.js counts slides at load, so nothing needs renumbering.</li>
+        </ul>
+      </div>
+      <div style="display:flex; flex-direction:column; justify-content:center; gap:clamp(12px,1.6cqi,18px);">
+        <div class="banner" style="grid-template-columns:1fr; margin:0; text-align:left;">
+          <div><div class="bv">--public</div><div class="bl">node build.mjs starter --public writes starter-public.html with this slide gone.</div></div>
+        </div>
+        <div class="card feature" style="height:auto;"><div class="ck">Try it</div><h3>Diff the two builds</h3><p>Build both outputs and open them side by side: the standalone shows all 14 slides, the public build 13 — and no other difference.</p></div>
+      </div>
+    </div>
+    <div class="slide-foot"><span>site2deck · Starter Deck</span><span>Internal only</span></div>
+  </section>
+
+  <!-- ═══════════ 13 · DIVIDER ═══════════ -->
+  <section class="slide has-grid">
+    <div class="title-wrap">
+      <div class="title-main">
+        <div class="kicker"><span class="num">13</span> Next</div>
+        <h2>Now point it at a <em>real brand</em>.</h2>
+        <p class="title-sub" style="max-width:68ch;">
+          Run the extractor against a company website and this same deck re-renders in their colors,
+          their type, their logo. <b>Keep the structure, replace the copy</b>, and wrap anything you
+          can't verify in a TBD marker. The skin changes; the discipline doesn't.
+        </p>
+        <div class="chips">
+          <span class="chip">Your palette</span>
+          <span class="chip c-2">Your type</span>
+          <span class="chip c-3">Your logo</span>
+          <span class="chip c-4">Same engine</span>
+        </div>
+      </div>
+      <div class="slide-foot"><span>site2deck · Starter Deck</span><span>Next</span></div>
+    </div>
+  </section>
+
+  <!-- ═══════════ 14 · CLOSING ═══════════ -->
+  <section class="slide has-grid">
+    <div class="title-wrap">
+      <div class="title-main">
+        <div class="kicker"><span class="num">14</span> Colophon</div>
+        <h2>The skin comes off. <em>The engine stays.</em></h2>
+        <p class="title-sub" style="max-width:66ch;">
+          Every slide you just read was shared/deck.css wearing this deck's neutral tokens.css.
+          Replace the tokens and the same fourteen slides speak another brand's language —
+          <b>that is the whole trick</b>.
+        </p>
+        <div class="brand-row" style="margin-top:clamp(20px,3cqi,34px);">
+          <img class="brand-logo" src="assets/logo.svg" alt="Placeholder mark" />
+          <div class="brand-lockup"><span class="rule"></span><span class="wordmark">Your wordmark here</span></div>
+        </div>
+        <div class="chips" style="margin-top:clamp(16px,2.2cqi,24px);">
+          <span class="chip">your-company.com</span>
+          <span class="chip c-2">hello@your-company.com</span>
+          <span class="chip">City, Country</span>
+        </div>
+      </div>
+      <div class="slide-foot"><span>site2deck · Starter Deck</span><span>MIT — remix freely</span></div>
+    </div>
+  </section>
+
+</div>
+
+<!-- Light brand lockup cloned into every content slide by deck.js -->
+<template id="mark-tpl">
+  <div class="mark">
+    <img class="mark-logo" src="assets/logo.svg" alt="Starter Deck" />
+    <span class="mark-div"></span>
+    <span class="mark-txt"><b>Starter Deck</b><i>site2deck</i></span>
+  </div>
+</template>
+
+<div class="controls">
+  <button id="prev" aria-label="Previous slide">&#8249;</button>
+  <div class="counter"><b id="cur">01</b> / <span id="total">14</span></div>
+  <button id="next" aria-label="Next slide">&#8250;</button>
+</div>
+<div class="hint">&#8592; &#8594; navigate</div>
+
+<script src="../../shared/deck.js"></script>
+</body>
+</html>

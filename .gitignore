@@ -1,0 +1,10 @@
+# Generated standalone builds — rebuild with `node build.mjs <deck>`
+decks/**/*-standalone.html
+decks/**/*-public.html
+
+# Extraction smoke-test decks — scratch output, never committed
+decks/*-test/
+
+node_modules/
+.DS_Store
+.gstack/

@@ -1,0 +1,73 @@
+/* ── Starter deck tokens ───────────────────────────────────────────────────────
+   The neutral skin the shared engine wears before a brand moves in. This is
+   the file `node extract.mjs <url>` rewrites for every new deck: each value
+   below is a slot that gets replaced with one sampled straight off the
+   company's website — exact colors, real fonts, matching radii. Nothing in
+   shared/ ever changes per brand; only this file (plus assets/ and fonts/).
+
+   The starter deliberately ships zero font binaries: --font-display/body/mono
+   point at system stacks so the repo stays text-only. A brand skin adds
+   @font-face blocks at the top of this file for self-hosted woff2 files in
+   ./fonts/ (weights 400–800) so decks open from file:// with no network.
+   Why each value exists: docs/method.md; uncertain values carry TODO(spot-check). */
+
+:root {
+  /* Color — neutral editorial light theme (extract.mjs: the site's palette) */
+  --color-background: #FFFFFF;
+  --color-surface: #F7F5F0;          /* warm paper */
+  --color-surface-alt: #EDEAE2;
+  --color-border: rgba(28, 27, 24, 0.12);
+  --color-border-strong: rgba(28, 27, 24, 0.24);
+  --color-text: #1C1B18;             /* warm near-black ink */
+  --color-text-muted: rgba(28, 27, 24, 0.72);
+  --color-text-faint: rgba(28, 27, 24, 0.46);
+  --color-primary: #0E6B63;          /* deep teal — the one strong accent (extract.mjs: brand primary) */
+  --color-primary-dark: #0A4F49;
+  --color-primary-light: #E3EFEC;    /* tinted surface — .card.feature, table row highlights */
+  --color-primary-tint: #5BB8AB;     /* brightened primary for the dark register (cover, .banner) */
+  --color-on-primary: #FFFFFF;
+  --color-success: #2F7D46;
+  --color-warning: #9A6A0B;          /* the [TBD] marker — keep it loud and un-brandlike */
+  --color-error: #B3372B;
+
+  /* Accents (chips, card top-borders, photo-card washes) — one primary plus
+     three genuinely distinct support hues (extract.mjs: secondary palette) */
+  --accent: var(--color-primary);    /* teal */
+  --accent-2: #B4562B;               /* copper */
+  --accent-3: #44518F;               /* slate indigo */
+  --accent-4: #7D4E76;               /* plum */
+
+  /* RGB triples for photo-card gradient overlays (.pcard.p-1 / .p-2 / .p-3) */
+  --accent-rgb: 14, 107, 99;
+  --accent-deep-rgb: 10, 79, 73;
+  --accent-2-rgb: 180, 86, 43;
+  --accent-2-deep-rgb: 122, 55, 25;
+  --accent-3-rgb: 68, 81, 143;
+
+  /* Chart series — CVD-separable against the light surface */
+  --chart-1: #0E6B63;
+  --chart-2: #B4562B;
+  --chart-3: #1C1B18;
+
+  /* Dark register (cover, .banner, .phone frame) — one ink, used sparingly */
+  --dark-bg: #1B1A17;
+  --dark-text: #F5F3ED;
+  --dark-muted: rgba(245, 243, 237, 0.66);
+  --dark-border: rgba(245, 243, 237, 0.18);
+
+  /* Type — system stacks only in the starter (extract.mjs: the site's real
+     faces, self-hosted in ./fonts/). --font-mono voices kickers, chips, and
+     table heads; if the brand has no monospace, point it at the brand sans —
+     tracked-uppercase labels read fine in a humanist face. */
+  --font-display: system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  --font-body: system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  --font-mono: ui-monospace, 'SF Mono', 'Cascadia Code', Menlo, Consolas, monospace;
+
+  /* Shape (extract.mjs: sampled from the site's buttons and cards) */
+  --radius-sm: 6px;
+  --radius-md: 12px;
+  --radius-lg: 16px;
+
+  /* Deck stage (letterbox behind the slide card) */
+  --stage-bg: #131211;
+}

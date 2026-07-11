@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 1200">
+  <!-- Placeholder photo for .split-media — a light geometric plate that sits
+       directly on the slide (no wash), so it stays quiet under any skin.
+       Replace with a photo from the brand's own site. -->
+  <rect width="900" height="1200" fill="#EFEDE6"/>
+  <path stroke="#DEDBD1" stroke-width="1" d="M112.5 0v1200M225.5 0v1200M337.5 0v1200M450.5 0v1200M562.5 0v1200M675.5 0v1200M787.5 0v1200M0 150.5h900M0 300.5h900M0 450.5h900M0 600.5h900M0 750.5h900M0 900.5h900M0 1050.5h900"/>
+  <circle cx="450" cy="480" r="260" fill="none" stroke="#B5B1A3" stroke-width="2"/>
+  <path fill="#C3BFB2" d="M450 220a260 260 0 0 1 260 260H450z"/>
+  <path fill="#A8A394" d="M450 740a260 260 0 0 1-260-260h260z"/>
+  <circle cx="450" cy="480" r="34" fill="#8F8B7C"/>
+  <rect x="590" y="880" width="120" height="120" fill="#C3BFB2"/>
+  <rect x="650" y="940" width="120" height="120" fill="none" stroke="#A8A394" stroke-width="2"/>
+  <path stroke="#B5B1A3" stroke-width="2" d="M120 1080 260 940M160 1080 300 940M200 1080 340 940"/>
+</svg>

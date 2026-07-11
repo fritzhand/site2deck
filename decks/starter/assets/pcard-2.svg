@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 1000">
+  <!-- Placeholder photo for .pcard.p-2 — concentric rings under the second
+       accent wash. Replace with brand photography. -->
+  <rect width="800" height="1000" fill="#D9D6CD"/>
+  <g fill="none" stroke="#ACA797">
+    <circle cx="400" cy="420" r="70" stroke-width="3"/>
+    <circle cx="400" cy="420" r="150" stroke-width="2.5"/>
+    <circle cx="400" cy="420" r="230" stroke-width="2"/>
+    <circle cx="400" cy="420" r="310" stroke-width="1.5"/>
+    <circle cx="400" cy="420" r="390" stroke-width="1"/>
+  </g>
+  <circle cx="400" cy="420" r="26" fill="#8F8B7C"/>
+  <rect x="560" y="760" width="90" height="90" fill="#B7B3A6"/>
+</svg>

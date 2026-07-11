@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 1000">
+  <!-- Placeholder photo for .pcard.p-3 — dot grid and triangle under the third
+       accent wash. Replace with brand photography. -->
+  <defs>
+    <pattern id="dots" width="90" height="90" patternUnits="userSpaceOnUse">
+      <circle cx="45" cy="45" r="7" fill="#B0AC9E"/>
+    </pattern>
+  </defs>
+  <rect width="800" height="1000" fill="#DBD8CF"/>
+  <rect width="800" height="1000" fill="url(#dots)"/>
+  <path fill="#A6A191" d="M400 230 660 720H140z"/>
+  <path fill="#DBD8CF" d="M400 400 540 660H260z"/>
+</svg>

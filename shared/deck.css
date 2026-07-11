@@ -1,0 +1,342 @@
+/* ── Deck engine (brand-neutral) ──────────────────────────────────────────────
+   Stage geometry, components, nav chrome, print block — a 1280×720
+   letterboxed card system. Every colour, font, and radius comes from a
+   per-deck tokens.css (decks/<name>/tokens.css); this file ships zero brand
+   values so the same engine can dress any brand.
+
+   Accent model: --accent is the primary; --accent-2/3/4 are optional support
+   accents. Cards, chips, and photo cards expose .acc / .c-2 / .p-2 variants
+   that map onto those vars. No decorative shadows, no gradients on type,
+   no emoji. Depth comes from borders and one ink "dark register". */
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+/* overscroll-behavior-x blocks the browser's swipe-back history gesture,
+   which would otherwise navigate away from the deck mid-swipe on mobile */
+html, body { height: 100%; overscroll-behavior-x: none; }
+body {
+  font-family: var(--font-body);
+  background: var(--stage-bg);
+  -webkit-font-smoothing: antialiased;
+  overflow: hidden;
+}
+
+/* ── Stage / letterbox ──────────────────────────────────────────────────── */
+.stage { position: fixed; inset: 0; background: var(--stage-bg); display: grid; place-items: center; padding: clamp(0px, 2.4vmin, 44px); }
+
+.slide {
+  container-type: inline-size;
+  position: relative;
+  width: 100%; height: 100%;
+  max-width: 1280px; max-height: 720px;
+  background: var(--color-background); color: var(--color-text);
+  border-radius: var(--radius-md);
+  padding: clamp(26px, 4.4cqi, 56px) clamp(30px, 5.2cqi, 72px);
+  overflow: auto;
+  display: none; flex-direction: column;
+}
+.slide::-webkit-scrollbar { width: 0; height: 0; }
+.slide.active { display: flex; }
+
+/* ── Brand lockup mark (logo + divider + name), top-right ─────────────────── */
+/* Injected into every content slide by deck.js (light). The cover slide carries
+   its own .mark.on-dark in markup. Mirrors the site's header lockup. */
+.mark {
+  position: absolute; z-index: 6; pointer-events: none;
+  top: clamp(20px, 2.8cqi, 38px); right: clamp(30px, 4.6cqi, 64px);
+  display: flex; align-items: center; gap: clamp(9px, 1.1cqi, 13px);
+}
+/* Keep the mark absolute even on has-grid slides, whose `> *` rule would
+   otherwise force it back into flow (bottom of the closing slide). */
+.slide.has-grid > .mark { position: absolute; z-index: 6; }
+.mark-logo { height: clamp(22px, 2.7cqi, 32px); width: auto; display: block; }
+.mark-div { width: 1px; align-self: stretch; background: var(--color-border-strong); }
+.mark-txt { font-family: var(--font-display); line-height: 1.1; }
+.mark-txt b { display: block; font-weight: 800; font-size: clamp(11px, 1.16cqi, 13.5px); letter-spacing: -0.01em; color: var(--color-text); }
+.mark-txt i { display: block; font-style: normal; font-weight: 500; font-size: clamp(8.5px, 0.92cqi, 10.5px); color: var(--color-text-faint); }
+/* Dark variant — an ink-glass block over a photo hero */
+.mark.on-dark {
+  background: rgba(26, 27, 27, 0.62); border: 1px solid rgba(255, 255, 255, 0.16);
+  border-radius: var(--radius-md); backdrop-filter: blur(8px);
+  padding: clamp(9px, 1.1cqi, 13px) clamp(13px, 1.6cqi, 19px);
+}
+.mark.on-dark .mark-div { background: rgba(255, 255, 255, 0.28); }
+.mark.on-dark .mark-txt b { color: #FFFFFF; }
+.mark.on-dark .mark-txt i { color: rgba(255, 255, 255, 0.74); }
+
+/* ── Photo-hero / cover slide (title) ───────────────────────────────────── */
+.slide.cover { background: var(--dark-bg); color: var(--dark-text); padding: 0; overflow: hidden; }
+.cover-photo { position: absolute; inset: 0; z-index: 0; }
+.cover-photo img { width: 100%; height: 100%; object-fit: cover; object-position: center; }
+.cover-photo::after {
+  content: ""; position: absolute; inset: 0;
+  background: linear-gradient(180deg, rgba(20,21,21,0.74) 0%, rgba(20,21,21,0.5) 42%, rgba(20,21,21,0.88) 100%);
+}
+@container (min-width: 761px) {
+  .cover-photo::after { background: linear-gradient(96deg, rgba(20,21,21,0.94) 0%, rgba(20,21,21,0.8) 34%, rgba(20,21,21,0.44) 60%, rgba(20,21,21,0.08) 84%); }
+}
+.slide.cover .title-wrap { position: relative; z-index: 2; height: 100%; padding: clamp(30px, 4.6cqi, 60px) clamp(30px, 5.2cqi, 72px) clamp(26px, 4.4cqi, 52px); }
+.slide.cover .title-sub { color: rgba(255, 255, 255, 0.9); }
+.slide.cover .title-sub b { color: #FFFFFF; }
+.slide.cover .kicker { color: var(--color-primary-tint, var(--color-primary)); }
+.slide.cover .kicker::before { background: var(--color-primary-tint, var(--color-primary)); }
+.slide.cover h1 em { color: var(--color-primary-tint, var(--color-primary)); font-style: normal; }
+.slide.cover .slide-foot { color: rgba(255, 255, 255, 0.58); }
+.slide.cover .chip { color: rgba(255, 255, 255, 0.9); border-color: rgba(255, 255, 255, 0.28); }
+.slide.cover .chip::before { background: var(--color-primary-tint, var(--color-primary)); }
+
+/* Faint 64px grid (title / divider slides — subtle brand texture) */
+.slide.has-grid::after {
+  content: "";
+  position: absolute; inset: 0; z-index: 0; pointer-events: none;
+  background-image:
+    linear-gradient(var(--color-border-strong) 1px, transparent 1px),
+    linear-gradient(90deg, var(--color-border-strong) 1px, transparent 1px);
+  background-size: 64px 64px;
+  opacity: 0.18;
+  -webkit-mask-image: radial-gradient(ellipse 90% 80% at 38% 42%, #000 30%, transparent 74%);
+  mask-image: radial-gradient(ellipse 90% 80% at 38% 42%, #000 30%, transparent 74%);
+}
+.slide.has-grid > * { position: relative; z-index: 1; }
+
+/* ── Typography ─────────────────────────────────────────────────────────── */
+.kicker {
+  font-family: var(--font-mono); font-size: clamp(10.5px, 1.02cqi, 12.5px);
+  font-weight: 700; letter-spacing: 0.16em; text-transform: uppercase;
+  color: var(--color-primary); display: flex; align-items: center; gap: 12px;
+  margin-bottom: clamp(14px, 2cqi, 24px);
+}
+.kicker::before { content: ""; width: clamp(20px, 2.6cqi, 32px); height: 2px; background: var(--color-primary); flex: none; }
+.kicker .num { font-variant-numeric: tabular-nums; color: var(--color-text-faint); font-weight: 600; }
+
+h1, h2 { font-family: var(--font-display); font-weight: 800; letter-spacing: -0.015em; color: inherit; text-wrap: balance; }
+h1 { font-size: clamp(32px, 5.8cqi, 66px); line-height: 1.04; }
+h2 { font-size: clamp(25px, 3.6cqi, 44px); line-height: 1.08; margin-bottom: 10px; }
+h1 em, h2 em { font-style: normal; color: var(--color-primary); }
+h3, h4 { font-family: var(--font-body); font-weight: 700; color: inherit; }
+
+.lede { font-size: clamp(15px, 1.6cqi, 20px); line-height: 1.55; color: var(--color-text-muted); max-width: 66ch; }
+.lede strong, .lede b { color: var(--color-text); font-weight: 700; }
+p { font-size: clamp(13px, 1.3cqi, 16px); line-height: 1.6; color: var(--color-text-muted); }
+.footnote { font-size: clamp(9.5px, 0.95cqi, 11.5px); color: var(--color-text-faint); line-height: 1.5; }
+.eyebrow {
+  font-family: var(--font-mono); font-size: clamp(10px, 0.98cqi, 12px);
+  font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase;
+  color: var(--color-primary); margin-bottom: 12px;
+}
+
+/* [TBD] placeholder marker — unmissable, so drafts never ship as final */
+.tbd {
+  font-family: var(--font-mono); font-size: 0.85em; font-weight: 700;
+  color: var(--color-warning);
+  border: 1px dashed var(--color-warning); border-radius: var(--radius-sm);
+  padding: 1px 6px; white-space: nowrap;
+}
+
+.slide-foot {
+  display: flex; align-items: baseline; justify-content: space-between; gap: 16px;
+  font-family: var(--font-mono); font-size: clamp(8.5px, 0.9cqi, 10.5px);
+  font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--color-text-faint);
+  margin-top: auto; padding-top: clamp(14px, 2cqi, 22px);
+}
+
+/* ── Title / divider slides ─────────────────────────────────────────────── */
+.title-wrap { display: flex; flex-direction: column; min-height: 100%; }
+.title-main { display: flex; flex-direction: column; justify-content: center; flex: 1; padding: clamp(18px, 2.6cqi, 36px) 0; }
+.title-sub { font-size: clamp(14.5px, 1.56cqi, 19px); color: var(--color-text-muted); margin-top: clamp(16px, 2cqi, 26px); max-width: 62ch; line-height: 1.55; }
+.title-sub b { color: var(--color-text); font-weight: 700; }
+.brand-row { display: flex; align-items: center; gap: 14px; }
+.brand-logo { height: clamp(34px, 4.2cqi, 52px); width: auto; display: block; }
+/* Vertical divider + wordmark lockup, echoing the site header */
+.brand-lockup { display: flex; align-items: center; gap: clamp(12px, 1.6cqi, 18px); }
+.brand-lockup .rule { width: 1px; height: clamp(30px, 3.6cqi, 44px); background: var(--color-border-strong); }
+.brand-lockup .wordmark { font-family: var(--font-display); font-weight: 800; font-size: clamp(15px, 1.8cqi, 22px); line-height: 1.1; letter-spacing: -0.01em; color: var(--color-text); }
+
+/* ── Chips (tags, small facts) ──────────────────────────────────────────── */
+.chips { display: flex; gap: clamp(10px, 1.3cqi, 14px); flex-wrap: wrap; margin-top: clamp(16px, 2cqi, 26px); }
+.chip {
+  font-family: var(--font-mono); font-size: clamp(10px, 1cqi, 12px);
+  font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: var(--color-text-muted);
+  border: 1px solid var(--color-border-strong); border-radius: var(--radius-sm);
+  padding: clamp(6px, 0.8cqi, 9px) clamp(10px, 1.2cqi, 14px);
+  display: inline-flex; align-items: center; gap: 8px;
+}
+.chip::before { content: ""; width: 7px; height: 7px; flex: none; background: var(--accent); }
+.chip.c-2::before { background: var(--accent-2); }
+.chip.c-3::before { background: var(--accent-3); }
+.chip.c-4::before { background: var(--accent-4); }
+
+/* ── Stat tiles ─────────────────────────────────────────────────────────── */
+.stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: clamp(16px, 2.2cqi, 30px); margin-top: clamp(14px, 1.8cqi, 24px); }
+.stat { border-top: 2px solid var(--color-text); padding-top: clamp(12px, 1.5cqi, 18px); }
+.stat .v { font-family: var(--font-display); font-weight: 800; font-size: clamp(30px, 3.8cqi, 50px); line-height: 1; color: var(--color-primary); letter-spacing: -0.02em; }
+.stat .l { font-size: clamp(11px, 1.1cqi, 13.5px); color: var(--color-text-muted); margin-top: 10px; line-height: 1.4; }
+
+/* Dark stat banner (ink register) */
+.banner {
+  background: var(--dark-bg); color: var(--dark-text);
+  border-radius: var(--radius-lg);
+  padding: clamp(18px, 2.5cqi, 32px) clamp(20px, 2.8cqi, 38px);
+  display: grid; grid-template-columns: repeat(3, 1fr); gap: clamp(16px, 2.2cqi, 34px);
+  margin: clamp(8px, 1.2cqi, 14px) 0 clamp(12px, 1.6cqi, 18px);
+}
+.banner .bv { font-family: var(--font-display); font-weight: 800; font-size: clamp(22px, 2.9cqi, 34px); line-height: 1.05; letter-spacing: -0.01em; color: var(--color-primary-tint, var(--color-primary)); }
+.banner .bl { font-size: clamp(10.5px, 1.02cqi, 13px); color: var(--dark-muted); margin-top: 10px; line-height: 1.4; }
+
+/* ── Cards ──────────────────────────────────────────────────────────────── */
+.cols { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(24px, 3cqi, 48px); align-items: start; align-content: start; margin-top: clamp(6px, 1cqi, 12px); }
+.cols-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: clamp(13px, 1.7cqi, 22px); margin-top: clamp(8px, 1.4cqi, 18px); }
+.cols-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: clamp(11px, 1.4cqi, 18px); margin-top: clamp(8px, 1.4cqi, 18px); }
+/* Grow + vertically centre a short content region so cards don't strand at the top */
+.fill-v { flex: 1 1 auto; align-content: center; }
+/* The roadmap instead grows its lanes (vertical dividers extend) with content top-anchored */
+.road.fill-v { align-content: stretch; grid-auto-rows: 1fr; }
+
+/* Named-contributor / label-value roster */
+.who { border-left: 2px solid var(--color-primary); padding-left: 12px; }
+.who .wn { font-family: var(--font-display); font-weight: 800; font-size: clamp(14px, 1.5cqi, 18px); color: var(--color-text); line-height: 1.15; }
+.who .wr { font-size: clamp(10.5px, 1.05cqi, 12.5px); color: var(--color-text-muted); margin-top: 4px; line-height: 1.35; }
+.card {
+  border: 1px solid var(--color-border); border-radius: var(--radius-lg);
+  padding: clamp(15px, 1.8cqi, 22px) clamp(14px, 1.6cqi, 20px);
+  background: var(--color-surface);
+  display: flex; flex-direction: column; gap: 8px; height: 100%;
+}
+.card .ck { font-family: var(--font-mono); font-weight: 700; font-size: clamp(9.5px, 0.92cqi, 11px); letter-spacing: 0.13em; text-transform: uppercase; color: var(--accent); }
+.card h3 { font-family: var(--font-display); font-weight: 800; font-size: clamp(16px, 1.85cqi, 22px); line-height: 1.12; letter-spacing: -0.01em; }
+.card p { font-size: clamp(11.5px, 1.16cqi, 14px); }
+.card .emp { font-size: clamp(10px, 1cqi, 12px); color: var(--color-text-faint); margin-top: auto; line-height: 1.45; }
+.card.acc { border-top: 3px solid var(--accent); }
+.card.acc-2 { border-top: 3px solid var(--accent-2); }
+.card.acc-2 .ck { color: var(--accent-2); }
+.card.acc-3 { border-top: 3px solid var(--accent-3); }
+.card.acc-3 .ck { color: var(--accent-3); }
+.card.acc-4 { border-top: 3px solid var(--accent-4); }
+.card.acc-4 .ck { color: var(--accent-4); }
+/* Featured (headline) card */
+.card.feature { background: var(--color-primary-light); border: 1px solid var(--color-primary); border-top: 3px solid var(--color-primary); }
+
+/* ── Photo cards (sector/theme photo + accent gradient) ──────────────────── */
+.pcard { position: relative; overflow: hidden; border-radius: var(--radius-lg); min-height: clamp(200px, 34cqi, 440px); display: flex; flex-direction: column; justify-content: flex-end; }
+.pcard > img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+.pcard-grad { position: absolute; inset: 0; background: linear-gradient(180deg, rgba(20,21,21,0.28) 0%, rgba(20,21,21,0.6) 55%, rgba(12,13,13,0.96) 100%); }
+.pcard.p-1 .pcard-grad { background: linear-gradient(180deg, rgba(20,21,21,0.22) 0%, rgba(var(--accent-rgb),0.52) 55%, rgba(var(--accent-deep-rgb),0.96) 100%); }
+.pcard.p-2 .pcard-grad { background: linear-gradient(180deg, rgba(20,21,21,0.22) 0%, rgba(var(--accent-2-rgb),0.52) 55%, rgba(var(--accent-2-deep-rgb),0.96) 100%); }
+.pcard.p-3 .pcard-grad { background: linear-gradient(180deg, rgba(20,21,21,0.22) 0%, rgba(var(--accent-3-rgb),0.5) 55%, rgba(20,21,21,0.96) 100%); }
+.pcard-body { position: relative; z-index: 2; padding: clamp(16px, 1.9cqi, 24px); }
+.pcard-body .pk { font-family: var(--font-mono); font-weight: 700; font-size: clamp(9px, 0.9cqi, 11px); letter-spacing: 0.14em; text-transform: uppercase; color: rgba(255,255,255,0.82); margin-bottom: 6px; }
+.pcard-body h3 { font-family: var(--font-display); font-weight: 800; font-size: clamp(18px, 2.15cqi, 27px); color: #fff; line-height: 1.08; }
+.pcard-body p { font-size: clamp(11px, 1.12cqi, 13.5px); color: rgba(255,255,255,0.88); margin-top: 8px; line-height: 1.45; }
+/* Let a grid grow its rows to fill the stage (image cards, roadmap lanes) */
+.fill-v.stretch { align-content: stretch; grid-auto-rows: 1fr; }
+
+ul.clean { list-style: none; display: flex; flex-direction: column; gap: clamp(7px, 0.9cqi, 11px); margin-top: 6px; }
+ul.clean li { font-size: clamp(12.5px, 1.3cqi, 15.5px); color: var(--color-text-muted); line-height: 1.45; padding-left: 20px; position: relative; }
+ul.clean li::before { content: ""; position: absolute; left: 0; top: 0.58em; width: 7px; height: 7px; border-radius: 50%; background: var(--accent); }
+ul.clean li b { color: var(--color-text); font-weight: 700; }
+ul.clean.tight li { font-size: clamp(11.5px, 1.16cqi, 14px); }
+
+/* ── Table (tiers / agenda register) ────────────────────────────────────── */
+.menu { width: 100%; border-collapse: separate; border-spacing: 0; margin-top: clamp(8px, 1.2cqi, 14px); border: 1px solid var(--color-border); border-radius: var(--radius-md); overflow: hidden; }
+.menu th {
+  background: var(--color-surface); text-align: left;
+  font-family: var(--font-mono); font-size: clamp(9px, 0.9cqi, 11px);
+  letter-spacing: 0.12em; text-transform: uppercase; color: var(--color-text-muted); font-weight: 700;
+  padding: 9px 14px; border-bottom: 1px solid var(--color-border);
+}
+.menu td { padding: clamp(7px, 0.95cqi, 11px) 14px; border-bottom: 1px solid var(--color-border); font-size: clamp(11px, 1.12cqi, 13.5px); color: var(--color-text-muted); vertical-align: top; line-height: 1.45; }
+.menu tr:last-child td { border-bottom: none; }
+.menu .mot { font-weight: 700; color: var(--color-text); white-space: nowrap; }
+.menu tr.hl td { background: var(--color-primary-light); }
+.menu tr.hl .mot { color: var(--color-primary); }
+
+/* ── Photo / figure ─────────────────────────────────────────────────────── */
+.mock { border: 1px solid var(--color-border-strong); border-radius: var(--radius-md); overflow: hidden; background: var(--color-surface); }
+.mock img { display: block; width: 100%; height: 100%; object-fit: cover; object-position: center; }
+figure { margin: 0; }
+figcaption { font-size: clamp(9.5px, 0.95cqi, 12px); color: var(--color-text-muted); margin-top: 10px; line-height: 1.45; }
+/* Photo grid for proof slides */
+.photo-grid { display: grid; gap: clamp(8px, 1cqi, 12px); margin-top: clamp(8px, 1.2cqi, 14px); }
+.photo-grid img { display: block; width: 100%; height: 100%; object-fit: cover; border-radius: var(--radius-sm); border: 1px solid var(--color-border); }
+
+/* Phone mock (app screenshot in a device frame) */
+.phone { position: relative; border-radius: clamp(18px, 2.4cqi, 30px); border: clamp(5px, 0.8cqi, 9px) solid var(--dark-bg); overflow: hidden; background: var(--dark-bg); box-shadow: 0 0 0 1px var(--color-border-strong); }
+.phone img { display: block; width: 100%; height: auto; }
+
+/* ── Icon feature rows + category tiles (icon webfont) ───────────────────── */
+/* Uses a self-hosted icon webfont (e.g. Bootstrap Icons `bi bi-*`); colour
+   follows the accent vars so the same icon language as the source site
+   renders in-brand. */
+.feat { display: flex; gap: clamp(10px, 1.3cqi, 15px); align-items: flex-start; }
+.feat .fi { flex: none; width: clamp(34px, 4cqi, 46px); height: clamp(34px, 4cqi, 46px); border-radius: var(--radius-md); display: grid; place-items: center; background: var(--color-primary-light); color: var(--color-primary); font-size: clamp(15px, 1.85cqi, 22px); }
+.feat .ft { font-family: var(--font-display); font-weight: 800; font-size: clamp(13px, 1.42cqi, 17px); color: var(--color-text); line-height: 1.15; letter-spacing: -0.01em; }
+.feat .fd { font-size: clamp(10.5px, 1.08cqi, 13px); color: var(--color-text-muted); margin-top: 4px; line-height: 1.42; }
+.feat.c-2 .fi { background: rgba(var(--accent-2-rgb), 0.13); color: var(--accent-2); }
+.feat.c-3 .fi { background: rgba(var(--accent-3-rgb), 0.13); color: var(--accent-3); }
+
+.cats { display: grid; grid-template-columns: repeat(6, 1fr); gap: clamp(10px, 1.3cqi, 16px); margin-top: clamp(10px, 1.6cqi, 20px); }
+.cat { display: flex; flex-direction: column; align-items: center; gap: clamp(6px, 0.9cqi, 10px); text-align: center; padding: clamp(12px, 1.7cqi, 20px) clamp(8px, 1cqi, 12px); border: 1px solid var(--color-border); border-radius: var(--radius-md); background: var(--color-surface); }
+.cat i { font-size: clamp(20px, 2.5cqi, 31px); color: var(--color-primary); line-height: 1; }
+.cat span { font-family: var(--font-body); font-weight: 700; font-size: clamp(10.5px, 1.08cqi, 13px); color: var(--color-text); line-height: 1.2; }
+@container (max-width: 760px) { .cats { grid-template-columns: repeat(3, 1fr) !important; } }
+
+/* ── Roadmap ────────────────────────────────────────────────────────────── */
+.road { display: grid; grid-template-columns: repeat(3, 1fr); border-top: 2px solid var(--color-text); margin-top: 14px; }
+.road .ph { padding: clamp(14px, 1.8cqi, 20px) clamp(14px, 1.6cqi, 20px) 0 0; border-right: 1px solid var(--color-border); }
+.road .ph + .ph { padding-left: clamp(14px, 1.6cqi, 20px); }
+.road .ph:last-child { border-right: none; }
+.road .pt { font-family: var(--font-mono); font-weight: 700; font-size: clamp(9.5px, 0.92cqi, 11px); letter-spacing: 0.12em; text-transform: uppercase; margin-bottom: 10px; color: var(--color-primary); }
+.road .ph h4 { font-family: var(--font-display); font-size: clamp(15px, 1.7cqi, 21px); margin-bottom: 8px; letter-spacing: -0.01em; }
+.road .ph p { font-size: clamp(11px, 1.12cqi, 13.5px); line-height: 1.5; }
+.road .ph ul.clean li { font-size: clamp(11px, 1.12cqi, 13.5px); }
+
+/* ── Split (photo + content) ────────────────────────────────────────────── */
+.split { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(20px, 2.8cqi, 44px); align-items: stretch; margin-top: clamp(8px, 1.2cqi, 16px); flex: 1; min-height: 0; }
+.split .split-media { border-radius: var(--radius-md); overflow: hidden; border: 1px solid var(--color-border); min-height: clamp(200px, 30cqi, 420px); }
+.split .split-media img { width: 100%; height: 100%; object-fit: cover; display: block; }
+
+/* ── Responsive ─────────────────────────────────────────────────────────── */
+@container (max-width: 760px) {
+  /* !important is load-bearing: slides tune desktop column ratios with inline
+     grid-template-columns, which would otherwise beat this query and clip
+     content off narrow screens. */
+  .cols, .cols-3, .cols-4, .stats, .split { grid-template-columns: 1fr !important; gap: clamp(14px, 4cqi, 24px); }
+  .photo-grid { grid-template-columns: 1fr 1fr !important; }
+  .split, .fill-v { align-content: start; }
+  .banner { grid-template-columns: 1fr !important; gap: 16px; }
+  .road { grid-template-columns: 1fr; }
+  .road .ph { border-right: none; border-bottom: 1px solid var(--color-border); padding: 0 0 clamp(12px,3cqi,18px); }
+  .road .ph + .ph { padding-left: 0; padding-top: clamp(12px,3cqi,18px); }
+  .road .ph:last-child { border-bottom: none; }
+  h1, h2 { overflow-wrap: break-word; }
+  /* keep the kicker clear of the absolutely-positioned corner mark; on phones
+     the lockup collapses to just the logo so it doesn't crowd the headline */
+  .kicker { margin-right: 56px; }
+  .mark-txt, .mark-div { display: none; }
+  .mark.on-dark { padding: 8px; }
+  .split .split-media { min-height: clamp(180px, 52cqi, 260px); }
+  /* Tables scroll sideways instead of cramming columns into 390px */
+  .menu { display: block; overflow-x: auto; -webkit-overflow-scrolling: touch; }
+}
+@media (max-width: 740px) { .slide { max-height: none; border-radius: 0; padding-bottom: clamp(72px, 16vmin, 96px); } .slide.cover { padding: 0; } .slide.cover .title-wrap { padding-bottom: clamp(72px, 16vmin, 96px); } .stage { padding: 0; } .slide-foot, .hint { display: none; } }
+@media (max-height: 560px) { .slide { justify-content: flex-start; max-height: none; padding-bottom: 64px; } .slide-foot { display: none; } }
+
+/* ── Nav chrome ─────────────────────────────────────────────────────────── */
+.controls { position: fixed; bottom: clamp(14px, 2.4vmin, 22px); left: 0; right: 0; z-index: 30; display: flex; align-items: center; justify-content: center; gap: 12px; pointer-events: none; }
+.controls > * { pointer-events: auto; }
+.counter { font-family: var(--font-mono); font-weight: 700; font-size: 11px; letter-spacing: 0.12em; color: rgba(255,255,255,0.82); background: rgba(26,27,27,0.82); padding: 8px 14px; border-radius: var(--radius-sm); }
+.counter b { color: #FFFFFF; font-weight: 700; }
+.controls button { font-family: var(--font-body); font-size: 14px; background: rgba(26,27,27,0.82); color: #FFFFFF; border: 1px solid rgba(255,255,255,0.16); border-radius: var(--radius-sm); min-width: 36px; height: 34px; padding: 0 10px; cursor: pointer; transition: background 150ms; }
+.controls button:hover { background: rgba(45,46,46,0.95); }
+.progress { position: fixed; top: 0; left: 0; height: 3px; background: var(--color-primary); z-index: 40; transition: width 200ms ease-out; }
+.hint { position: fixed; bottom: clamp(16px, 2.4vmin, 24px); right: 22px; z-index: 30; font-family: var(--font-mono); font-size: 10px; font-weight: 700; letter-spacing: 0.1em; color: rgba(255,255,255,0.45); pointer-events: none; }
+@media (max-width: 740px) { .hint { display: none; } }
+
+/* ── Print / PDF export ─────────────────────────────────────────────────── */
+@media print {
+  body { overflow: visible; background: #fff; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  .controls, .progress, .hint { display: none !important; }
+  .stage { position: static; display: block; padding: 0; }
+  @page { size: 1280px 720px; margin: 0; }
+  .slide { display: flex !important; position: relative !important; width: 1280px; height: 720px; max-width: none; max-height: none; border-radius: 0; page-break-after: always; break-after: page; overflow: hidden; }
+  .slide:last-child { page-break-after: auto; break-after: auto; }
+}

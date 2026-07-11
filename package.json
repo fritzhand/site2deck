@@ -1,0 +1,25 @@
+{
+  "name": "site2deck",
+  "version": "0.1.0",
+  "description": "Turn any company website into a branded, offline, single-file HTML slide-deck builder: extract the site's design system, skin a shared deck engine with it, and iterate by eye.",
+  "type": "module",
+  "license": "MIT",
+  "engines": {
+    "node": ">=18"
+  },
+  "scripts": {
+    "extract": "node extract.mjs",
+    "build": "node build.mjs",
+    "serve": "python3 -m http.server 8000"
+  },
+  "keywords": [
+    "slides",
+    "presentation",
+    "deck",
+    "design-tokens",
+    "brand",
+    "scraper",
+    "standalone-html",
+    "pdf-export"
+  ]
+}

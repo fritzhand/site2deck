@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 1000">
+  <!-- Placeholder photo for .pcard.p-1 — light-gray diagonals so the primary
+       accent wash tints it. Replace with brand photography. -->
+  <rect width="800" height="1000" fill="#DCD9D0"/>
+  <path stroke="#B7B3A6" stroke-width="34" d="M-900 1000 100 0M-700 1000 300 0M-500 1000 500 0M-300 1000 700 0M-100 1000 900 0M100 1000 1100 0M300 1000 1300 0M500 1000 1500 0M700 1000 1700 0"/>
+  <circle cx="560" cy="270" r="120" fill="#949081"/>
+  <circle cx="560" cy="270" r="52" fill="#DCD9D0"/>
+</svg>
