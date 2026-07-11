@@ -2,6 +2,8 @@
 
 Turn any company website into a branded, offline, single-file HTML slide-deck builder.
 
+**Website:** [fritzhand.github.io/site2deck](https://fritzhand.github.io/site2deck/) · **Live demo:** [the starter deck](https://fritzhand.github.io/site2deck/demo.html)
+
 Point `extract.mjs` at a company's site and you get a deck project dressed in that company's own design system — its exact colors, its webfont self-hosted, its logo, its icon set — sitting on a brand-neutral 1280×720 deck engine. You author slides in a small component vocabulary, then build the deck into **one self-contained HTML file**: it opens from `file://` with zero network access, travels as a single email attachment, and prints to PDF at exactly 1280×720 per page.
 
 The method has been proven twice in real client work. This repo packages it.
@@ -35,7 +37,7 @@ decks/acme/acme-standalone.html  one file — file:// · email · print-to-PDF
 Requirements: Node ≥ 18. No `npm install` — there are no dependencies.
 
 ```bash
-git clone https://github.com/<you>/site2deck && cd site2deck
+git clone https://github.com/fritzhand/site2deck && cd site2deck
 
 # 1. Extract the brand (deck is named from the domain; override with --name)
 node extract.mjs https://yourcompany.com

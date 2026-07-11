@@ -34,6 +34,8 @@ directly from `file://` — serving is never required.
 | `shared/deck.css` | The engine. Extend **only** for a genuinely missing component, and keep it brand-neutral — zero colour/font/radius literals; everything reads from tokens vars. |
 | `shared/deck.js` | Navigation. Rarely a reason to touch it. |
 | `extract.mjs`, `build.mjs` | Tooling. Don't modify while working on a deck. |
+| `docs/index.html` | The GitHub Pages landing site (served from `/docs` on `main`). Self-contained; edit directly. |
+| `docs/demo.html` | **GENERATED** copy of the starter deck for the website. Regenerate with `node build.mjs starter && cp decks/starter/starter-standalone.html docs/demo.html`. |
 
 ## The tokens contract
 

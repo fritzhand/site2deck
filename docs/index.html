@@ -1,0 +1,480 @@
+<!doctype html>
+<!-- site2deck landing page — served by GitHub Pages from /docs on main.
+     Self-contained except the display webfont. The interactive hero swaps
+     the same CSS custom properties a deck's tokens.css defines, so the
+     page demonstrates the exact mechanism the tool ships. -->
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>site2deck — your website already knows what your deck should look like</title>
+<meta name="description" content="Turn any company website into a branded, offline, single-file HTML slide-deck builder. One command extracts the site's real design system; the deck engine wears it.">
+<meta property="og:title" content="site2deck">
+<meta property="og:description" content="Point it at a website. Get a deck builder wearing that site's real design system — colors, fonts, logo — building single-file decks that open anywhere and print to PDF.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect x='2' y='7' width='28' height='18' rx='2.5' fill='%230E6B63'/%3E%3Crect x='6' y='12' width='12' height='2.5' fill='%23FBFAF7'/%3E%3Crect x='6' y='17' width='8' height='2.5' fill='%23FBFAF7' opacity='.6'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,700;12..96,800&display=swap">
+<style>
+/* ── Tokens — the same three roles a deck's tokens.css defines.
+      data-skin swaps them, which is the entire demo. ─────────────────────── */
+:root {
+  --accent: #0E6B63;
+  --accent-2: #B0642D;
+  --accent-light: #E4EFED;
+  --bg: #FBFAF7;
+  --surface: #F4F1EA;
+  --ink: #1E1B18;
+  --ink-muted: rgba(30, 27, 24, 0.72);
+  --ink-faint: rgba(30, 27, 24, 0.48);
+  --border: rgba(30, 27, 24, 0.14);
+  --border-strong: rgba(30, 27, 24, 0.26);
+  --dark-bg: #191511;
+  --dark-text: #F5F3ED;
+  --dark-muted: rgba(245, 243, 237, 0.66);
+  --font-display: 'Bricolage Grotesque', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  --font-body: system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  --font-mono: ui-monospace, 'SF Mono', SFMono-Regular, Menlo, Consolas, monospace;
+  --radius-sm: 8px;
+  --radius-md: 14px;
+  --radius-lg: 18px;
+}
+:root[data-skin="grove"] {
+  --accent: #D97014;
+  --accent-2: #3F9A4D;
+  --accent-light: #FBEDDC;
+  --bg: #FDFAF4;
+  --surface: #F7F0E3;
+  --ink: #2C2723;
+  --ink-muted: rgba(44, 39, 35, 0.72);
+  --ink-faint: rgba(44, 39, 35, 0.48);
+  --border: rgba(44, 39, 35, 0.14);
+  --border-strong: rgba(44, 39, 35, 0.26);
+  --dark-bg: #23201C;
+  --dark-text: #FBF6EF;
+  --dark-muted: rgba(251, 246, 239, 0.66);
+}
+:root[data-skin="pulse"] {
+  --accent: #7B3FD6;
+  --accent-2: #2CA5C9;
+  --accent-light: #EFE7FB;
+  --bg: #FAF9FD;
+  --surface: #F1EEF9;
+  --ink: #171430;
+  --ink-muted: rgba(23, 20, 48, 0.74);
+  --ink-faint: rgba(23, 20, 48, 0.5);
+  --border: rgba(23, 20, 48, 0.14);
+  --border-strong: rgba(23, 20, 48, 0.26);
+  --dark-bg: #0E1633;
+  --dark-text: #F2F4FA;
+  --dark-muted: rgba(242, 244, 250, 0.66);
+}
+:root { color-scheme: light; }
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+body {
+  font-family: var(--font-body);
+  background: var(--bg);
+  color: var(--ink);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  transition: background 400ms ease;
+}
+@media (prefers-reduced-motion: reduce) { body, .slide-demo, .chip-btn { transition: none !important; } }
+
+a { color: var(--accent); text-decoration-thickness: 1px; text-underline-offset: 3px; }
+a:hover { text-decoration-thickness: 2px; }
+:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; border-radius: 2px; }
+
+.wrap { max-width: 1080px; margin: 0 auto; padding: 0 24px; }
+
+/* ── Deck voice: kickers, display headings ──────────────────────────────── */
+.kicker {
+  font-family: var(--font-mono); font-size: 12px; font-weight: 700;
+  letter-spacing: 0.16em; text-transform: uppercase; color: var(--accent);
+  display: flex; align-items: center; gap: 12px; margin-bottom: 18px;
+}
+.kicker::before { content: ""; width: 28px; height: 2px; background: var(--accent); flex: none; }
+h1, h2 { font-family: var(--font-display); font-weight: 800; letter-spacing: -0.02em; text-wrap: balance; line-height: 1.05; }
+h1 { font-size: clamp(34px, 5.4vw, 58px); }
+h2 { font-size: clamp(26px, 3.6vw, 38px); }
+h1 em, h2 em { font-style: normal; color: var(--accent); }
+.lede { font-size: clamp(16px, 1.7vw, 19px); color: var(--ink-muted); max-width: 58ch; }
+.lede b, .lede strong { color: var(--ink); }
+
+/* ── Top bar ────────────────────────────────────────────────────────────── */
+.topbar { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 22px 0; }
+.wordmark { font-family: var(--font-display); font-weight: 800; font-size: 19px; letter-spacing: -0.01em; color: var(--ink); text-decoration: none; display: flex; align-items: center; gap: 10px; }
+.wordmark .dot { width: 22px; height: 15px; border-radius: 3px; background: var(--accent); display: inline-block; position: relative; }
+.wordmark .dot::after { content: ""; position: absolute; left: 4px; top: 4px; width: 9px; height: 2px; background: var(--bg); }
+.topnav { display: flex; align-items: center; gap: 20px; font-size: 14.5px; }
+.topnav a { color: var(--ink-muted); text-decoration: none; }
+.topnav a:hover { color: var(--ink); }
+.topnav a.gh { color: var(--ink); font-weight: 600; border: 1px solid var(--border-strong); border-radius: var(--radius-sm); padding: 7px 13px; }
+.topnav a.gh:hover { background: var(--surface); }
+
+/* ── Hero ───────────────────────────────────────────────────────────────── */
+.hero { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 6fr); gap: clamp(28px, 4vw, 56px); align-items: center; padding: clamp(28px, 5vh, 64px) 0 clamp(36px, 6vh, 72px); }
+.hero-copy { min-width: 0; }
+.hero-copy p.lede { margin-top: 18px; }
+.cmd {
+  margin-top: 26px; display: flex; align-items: center; gap: 0;
+  font-family: var(--font-mono); font-size: 14px;
+  background: var(--dark-bg); color: var(--dark-text);
+  border-radius: var(--radius-sm); overflow: hidden;
+  max-width: 100%;
+}
+.cmd code { padding: 13px 16px; flex: 1 1 0%; min-width: 0; white-space: pre-wrap; word-break: break-all; }
+.cmd code .p { color: var(--dark-muted); }
+.cmd button {
+  font-family: var(--font-mono); font-size: 12px; font-weight: 700; letter-spacing: 0.06em;
+  background: transparent; color: var(--dark-muted); border: none; border-left: 1px solid rgba(255,255,255,0.16);
+  padding: 13px 15px; cursor: pointer; flex: none;
+}
+.cmd button:hover { color: var(--dark-text); }
+.hero-links { margin-top: 14px; font-size: 14px; color: var(--ink-faint); }
+
+/* ── The demo module (signature) ────────────────────────────────────────── */
+.demo { display: flex; flex-direction: column; gap: 12px; min-width: 0; }
+.skin-row { display: flex; flex-wrap: wrap; gap: 8px; }
+.chip-btn {
+  font-family: var(--font-mono); font-size: 12px; font-weight: 600; letter-spacing: 0.02em;
+  color: var(--ink-muted); background: transparent;
+  border: 1px solid var(--border-strong); border-radius: var(--radius-sm);
+  padding: 8px 12px; cursor: pointer; display: inline-flex; align-items: center; gap: 8px;
+  transition: border-color 200ms, color 200ms;
+}
+.chip-btn::before { content: ""; width: 8px; height: 8px; flex: none; background: var(--sw, var(--accent)); }
+.chip-btn:hover { color: var(--ink); }
+.chip-btn[aria-pressed="true"] { border-color: var(--accent); color: var(--ink); box-shadow: inset 0 0 0 1px var(--accent); }
+.term {
+  font-family: var(--font-mono); font-size: 12.5px; line-height: 1.75;
+  background: var(--dark-bg); color: var(--dark-muted);
+  border-radius: var(--radius-sm); padding: 12px 16px;
+  min-height: 134px; white-space: pre-wrap; word-break: break-word;
+}
+.term .ok { color: var(--dark-text); }
+.term .ok b { color: var(--accent-2); font-weight: 700; }
+.term .cmdline { color: var(--dark-text); }
+.demo-note { font-size: 12.5px; color: var(--ink-faint); }
+
+/* The slide card — a scaled 1280x720 stage using the deck's own classes */
+.slide-demo {
+  aspect-ratio: 16 / 9; width: 100%;
+  background: #fff; color: var(--ink);
+  border: 1px solid var(--border); border-radius: var(--radius-md);
+  padding: 5.2% 5.8%;
+  display: flex; flex-direction: column;
+  container-type: inline-size;
+  transition: border-color 400ms;
+  box-shadow: 0 0 0 6px var(--surface);
+}
+.slide-demo .kicker { font-size: clamp(8px, 1.9cqi, 12px); margin-bottom: clamp(6px, 2.4cqi, 16px); }
+.slide-demo .s-h2 { font-family: var(--font-display); font-weight: 800; letter-spacing: -0.015em; line-height: 1.08; font-size: clamp(15px, 4.6cqi, 30px); text-wrap: balance; }
+.slide-demo .s-h2 em { font-style: normal; color: var(--accent); }
+.stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: clamp(8px, 3cqi, 22px); margin-top: auto; }
+.stat { border-top: 2px solid var(--ink); padding-top: clamp(5px, 1.8cqi, 12px); }
+.stat .v { font-family: var(--font-display); font-weight: 800; font-size: clamp(13px, 4cqi, 26px); line-height: 1; color: var(--accent); letter-spacing: -0.02em; }
+.stat .l { font-size: clamp(7px, 1.7cqi, 11px); color: var(--ink-muted); margin-top: clamp(3px, 1cqi, 7px); line-height: 1.35; }
+.s-foot { display: flex; justify-content: space-between; gap: 12px; font-family: var(--font-mono); font-size: clamp(6.5px, 1.3cqi, 9px); font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--ink-faint); margin-top: clamp(8px, 3cqi, 20px); }
+
+/* ── Sections ───────────────────────────────────────────────────────────── */
+section { padding: clamp(44px, 8vh, 84px) 0; }
+section + section { border-top: 1px solid var(--border); }
+.sec-head { max-width: 62ch; margin-bottom: clamp(24px, 4vh, 40px); }
+.sec-head p { color: var(--ink-muted); margin-top: 12px; }
+
+/* Method rail — a true sequence, so it earns its numbers */
+.road { display: grid; grid-template-columns: repeat(5, 1fr); border-top: 2px solid var(--ink); }
+.road .ph { padding: 18px 18px 0 0; border-right: 1px solid var(--border); }
+.road .ph + .ph { padding-left: 18px; }
+.road .ph:last-child { border-right: none; padding-right: 0; }
+.road .pt { font-family: var(--font-mono); font-weight: 700; font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--accent); margin-bottom: 10px; }
+.road h3 { font-family: var(--font-display); font-weight: 800; font-size: 17px; letter-spacing: -0.01em; margin-bottom: 6px; line-height: 1.15; }
+.road p { font-size: 13.5px; color: var(--ink-muted); line-height: 1.5; }
+.road code { font-family: var(--font-mono); font-size: 12px; color: var(--ink); background: var(--surface); padding: 1px 5px; border-radius: 4px; }
+
+/* Feature cards */
+.cards { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; }
+.card { border: 1px solid var(--border); border-top: 3px solid var(--accent); border-radius: var(--radius-lg); background: var(--surface); padding: 20px 18px; display: flex; flex-direction: column; gap: 8px; }
+.card:nth-child(3n+2) { border-top-color: var(--accent-2); }
+.card:nth-child(3n+2) .ck { color: var(--accent-2); }
+.card .ck { font-family: var(--font-mono); font-weight: 700; font-size: 10.5px; letter-spacing: 0.13em; text-transform: uppercase; color: var(--accent); }
+.card h3 { font-family: var(--font-display); font-weight: 800; font-size: 19px; letter-spacing: -0.01em; line-height: 1.15; }
+.card p { font-size: 14px; color: var(--ink-muted); }
+.card code { font-family: var(--font-mono); font-size: 12.5px; color: var(--ink); }
+
+/* Requirements table */
+.menu { width: 100%; border-collapse: separate; border-spacing: 0; border: 1px solid var(--border); border-radius: var(--radius-md); overflow: hidden; font-size: 14px; }
+.menu th { background: var(--surface); text-align: left; font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--ink-muted); font-weight: 700; padding: 10px 14px; border-bottom: 1px solid var(--border); }
+.menu td { padding: 11px 14px; border-bottom: 1px solid var(--border); color: var(--ink-muted); vertical-align: top; line-height: 1.5; }
+.menu tr:last-child td { border-bottom: none; }
+.menu .mot { font-weight: 700; color: var(--ink); white-space: nowrap; }
+.table-scroll { overflow-x: auto; }
+.table-note { font-size: 13px; color: var(--ink-faint); margin-top: 12px; }
+
+/* Quickstart terminal */
+.qs {
+  font-family: var(--font-mono); font-size: 13.5px; line-height: 1.9;
+  background: var(--dark-bg); color: var(--dark-muted);
+  border-radius: var(--radius-md); padding: 22px 26px; overflow-x: auto;
+}
+.qs .c { color: var(--dark-text); }
+.qs .cm { color: var(--dark-muted); opacity: 0.75; }
+.qs .hl { color: var(--accent-2); }
+
+/* Dark CTA */
+.cta { background: var(--dark-bg); color: var(--dark-text); border-radius: var(--radius-lg); padding: clamp(34px, 6vh, 56px) clamp(24px, 4vw, 56px); display: grid; grid-template-columns: 1fr auto; gap: 24px; align-items: center; }
+.cta .kicker { color: var(--accent-2); }
+.cta .kicker::before { background: var(--accent-2); }
+.cta h2 { color: var(--dark-text); }
+.cta p { color: var(--dark-muted); margin-top: 10px; max-width: 50ch; }
+.cta .btns { display: flex; flex-direction: column; gap: 10px; }
+.btn { font-family: var(--font-body); font-weight: 700; font-size: 15px; text-decoration: none; text-align: center; border-radius: var(--radius-sm); padding: 13px 22px; white-space: nowrap; }
+.btn.solid { background: var(--accent); color: #fff; }
+.btn.solid:hover { filter: brightness(1.08); }
+.btn.line { color: var(--dark-text); border: 1px solid rgba(255,255,255,0.28); }
+.btn.line:hover { background: rgba(255,255,255,0.08); }
+
+footer { padding: 28px 0 44px; display: flex; flex-wrap: wrap; gap: 10px 24px; justify-content: space-between; font-size: 13.5px; color: var(--ink-faint); }
+footer a { color: var(--ink-muted); }
+
+/* ── Responsive ─────────────────────────────────────────────────────────── */
+@media (max-width: 900px) {
+  .hero { grid-template-columns: minmax(0, 1fr); }
+  .road { grid-template-columns: 1fr; }
+  .road .ph { border-right: none; border-bottom: 1px solid var(--border); padding: 14px 0; }
+  .road .ph + .ph { padding-left: 0; }
+  .road .ph:last-child { border-bottom: none; }
+  .cards { grid-template-columns: 1fr; }
+  .cta { grid-template-columns: 1fr; }
+  .cta .btns { flex-direction: row; flex-wrap: wrap; }
+  .topnav a:not(.gh) { display: none; }
+}
+</style>
+</head>
+<body>
+
+<div class="wrap">
+  <header class="topbar">
+    <a class="wordmark" href="#"><span class="dot" aria-hidden="true"></span>site2deck</a>
+    <nav class="topnav" aria-label="Site">
+      <a href="#method">Method</a>
+      <a href="#features">Features</a>
+      <a href="#needs">Requirements</a>
+      <a href="demo.html">Demo deck</a>
+      <a class="gh" href="https://github.com/fritzhand/site2deck">GitHub</a>
+    </nav>
+  </header>
+
+  <main>
+    <section class="hero" style="border-top:none">
+      <div class="hero-copy">
+        <div class="kicker">Open source · MIT · zero dependencies</div>
+        <h1>Your website already knows what your <em>deck</em> should look like.</h1>
+        <p class="lede">site2deck points one command at a company website and hands back a deck builder wearing that site's <b>real design system</b> — its colors, its fonts, its logo. Decks build to a single HTML file that opens anywhere, works offline, and prints straight to PDF.</p>
+        <div class="cmd">
+          <code id="clone-cmd"><span class="p">$</span> git clone https://github.com/fritzhand/site2deck</code>
+          <button type="button" data-copy="git clone https://github.com/fritzhand/site2deck">COPY</button>
+        </div>
+        <p class="hero-links">Node ≥ 18 · no <code>npm install</code> · <a href="demo.html">open the starter deck</a></p>
+      </div>
+
+      <div class="demo">
+        <div class="skin-row" role="group" aria-label="Try an extraction — restyles this page">
+          <button class="chip-btn" type="button" data-skin="starter" style="--sw:#0E6B63" aria-pressed="true">extract.mjs starter.example</button>
+          <button class="chip-btn" type="button" data-skin="grove" style="--sw:#D97014" aria-pressed="false">extract.mjs greengrocer.example</button>
+          <button class="chip-btn" type="button" data-skin="pulse" style="--sw:#7B3FD6" aria-pressed="false">extract.mjs deeptech.example</button>
+        </div>
+        <div class="term" id="term" aria-live="polite"></div>
+        <div class="slide-demo" role="img" aria-label="A slide restyled by the selected brand skin">
+          <div class="kicker"><span>03 / Where to play</span></div>
+          <div class="s-h2">Three markets. One operating&nbsp;model. <em>Sequenced</em>, not simultaneous.</div>
+          <div class="stats">
+            <div class="stat"><div class="v">12&times;</div><div class="l">repeat-purchase gap vs. category</div></div>
+            <div class="stat"><div class="v">3&rarr;40</div><div class="l">locations on the current playbook</div></div>
+            <div class="stat"><div class="v">Q3</div><div class="l">decision point for market two</div></div>
+          </div>
+          <div class="s-foot"><span>Strategy review</span><span>Page 3 / 14</span></div>
+        </div>
+        <p class="demo-note">Simulated output on fictional domains — the tokens swapping above are the real mechanism. Run it on your own site for the real thing.</p>
+      </div>
+    </section>
+
+    <section id="method">
+      <div class="sec-head">
+        <div class="kicker">The method</div>
+        <h2>Steal the design system. <em>Legitimately.</em> It's your company's own site.</h2>
+        <p>Five steps, proven on real strategy engagements before it was open-sourced. The deck reads as "from the company" because every value is sampled, not styled from taste.</p>
+      </div>
+      <div class="road">
+        <div class="ph"><div class="pt">01 · Extract</div><h3>Scrape the real brand</h3><p><code>extract.mjs</code> mines the site's CSS for its true palette, downloads its webfonts, finds the logo, and identifies the icon set — with provenance for every choice.</p></div>
+        <div class="ph"><div class="pt">02 · Skin</div><h3>Tokens are the brand</h3><p>Everything lands in one <code>tokens.css</code> — about 40 custom properties. The engine ships zero brand values, so a new brand never touches shared code.</p></div>
+        <div class="ph"><div class="pt">03 · Author</div><h3>Compose, don't format</h3><p>Slides are plain HTML built from a fixed vocabulary — stat tiles, cards, roadmaps, photo cards. Unknown numbers wear a loud <code>.tbd</code> marker until sourced.</p></div>
+        <div class="ph"><div class="pt">04 · Build</div><h3>One file, anywhere</h3><p><code>build.mjs</code> inlines fonts, images, and styles into a single standalone HTML that opens from a USB stick and prints to a pixel-exact PDF.</p></div>
+        <div class="ph"><div class="pt">05 · Iterate</div><h3>Spot-check by eye</h3><p>Open the deck, look, edit, reload. Every judgment call the extractor made is flagged <code>TODO(spot-check)</code> so you know exactly where to look first.</p></div>
+      </div>
+    </section>
+
+    <section id="features">
+      <div class="sec-head">
+        <div class="kicker">What you get</div>
+        <h2>A deck pipeline that respects both your brand and your <em>audience</em>.</h2>
+      </div>
+      <div class="cards">
+        <div class="card"><div class="ck">Extraction</div><h3>Readiness scorecard</h3><p>Every run ends with an honest <code>[ok] / [partial] / [missing]</code> report per signal, each miss pointing at the exact fix in the requirements doc.</p></div>
+        <div class="card"><div class="ck">Distribution</div><h3>Single-file standalone</h3><p>Zero external references — fonts and images ride along as data URIs. The build fails loudly if anything would break offline. Email it, present it, archive it.</p></div>
+        <div class="card"><div class="ck">Redaction</div><h3>Internal vs. public cuts</h3><p>Tag a slide <code>data-internal</code> and <code>--public</code> strips it for the external audience — refusing to ship if a tagged slide somehow survives.</p></div>
+        <div class="card"><div class="ck">Honesty</div><h3>TBD markers</h3><p>Numbers you haven't sourced render in a loud amber dashed box. Drafts can't quietly pass as final — grep for <code>.tbd</code> before anything goes out.</p></div>
+        <div class="card"><div class="ck">Print</div><h3>Pixel-exact PDF</h3><p>Browser Print produces one 1280×720 page per slide, colors intact. One headless-chromium line automates it for CI or batch export.</p></div>
+        <div class="card"><div class="ck">AI-native</div><h3>The judgment layer, promptable</h3><p>A shipped <code>CLAUDE.md</code> and a paste-in prompt let an AI assistant resolve the taste calls: is that the real brand accent? Should the label face be the brand sans?</p></div>
+      </div>
+    </section>
+
+    <section id="needs">
+      <div class="sec-head">
+        <div class="kicker">What your site needs</div>
+        <h2>Extraction quality tracks how your site ships its <em>brand</em>.</h2>
+        <p>Nothing exotic — a normally-built site scores well. Every signal degrades gracefully, and the worst case is filling in one 70-line file by hand.</p>
+      </div>
+      <div class="table-scroll">
+      <table class="menu">
+        <tr><th>Signal</th><th>Best case</th><th>Fallback if missing</th></tr>
+        <tr><td class="mot">Stylesheets</td><td>Server-rendered CSS reachable via <code>&lt;link&gt;</code> or <code>&lt;style&gt;</code></td><td>JS-rendered SPAs extract thin — run against production, or go manual</td></tr>
+        <tr><td class="mot">Colors</td><td>Consistent hex usage; custom properties with brand-ish names; <code>theme-color</code> meta</td><td>Extractor ranks by frequency + context; you confirm the primary by eye</td></tr>
+        <tr><td class="mot">Fonts</td><td>Google Fonts link or <code>@font-face</code> with woff2</td><td>Hand-download the files; the tokens template shows where they go</td></tr>
+        <tr><td class="mot">Logo</td><td>An <code>&lt;img&gt;</code> with "logo" in its name, SVG preferred</td><td>apple-touch-icon and og:image are tried; worst case, drop a file in <code>assets/</code></td></tr>
+        <tr><td class="mot">Icons</td><td>A recognizable library (Bootstrap Icons, Font Awesome, Material, Lucide…)</td><td>Detection only — you self-host the set, or skip icon slides</td></tr>
+        <tr><td class="mot">Meta</td><td><code>og:site_name</code>, <code>og:image</code>, favicon</td><td>Purely nice-to-have; the wordmark falls back to the domain</td></tr>
+      </table>
+      </div>
+      <p class="table-note">The full story lives in <a href="https://github.com/fritzhand/site2deck/blob/main/docs/website-requirements.md">docs/website-requirements.md</a> — the same sections the scorecard points at.</p>
+    </section>
+
+    <section id="quickstart">
+      <div class="sec-head">
+        <div class="kicker">Quickstart</div>
+        <h2>Four commands from <em>website</em> to sendable deck.</h2>
+      </div>
+      <pre class="qs"><span class="cm"># 1 · extract your site's design system into a deck skin</span>
+<span class="c">$ node extract.mjs https://yourcompany.com</span>
+  [ok] stylesheets   6 collected
+  [ok] colors        primary <span class="hl">#0E6B63</span> (from --brand-teal, button rules)
+  [ok] fonts         2 families self-hosted to fonts/
+  [ok] logo          assets/logo.svg (from header img)
+  &rarr; decks/yourcompany/tokens.css · brand-report.json
+
+<span class="cm"># 2 · look at it (file:// works — no server needed)</span>
+<span class="c">$ open decks/yourcompany/index.html</span>
+
+<span class="cm"># 3 · resolve the TODO(spot-check) lines, write your slides</span>
+
+<span class="cm"># 4 · build the single-file deck (add --public for the external cut)</span>
+<span class="c">$ node build.mjs yourcompany</span>
+decks/yourcompany/yourcompany-standalone.html  (single file, opens anywhere)</pre>
+    </section>
+
+    <section>
+      <div class="cta">
+        <div>
+          <div class="kicker">Try it on yours</div>
+          <h2>Point it at your site.</h2>
+          <p>If the extraction nails your brand, you're five slides from a deck. If it doesn't, the scorecard tells you exactly why — and that's worth knowing about your website anyway.</p>
+        </div>
+        <div class="btns">
+          <a class="btn solid" href="https://github.com/fritzhand/site2deck">Get the repo</a>
+          <a class="btn line" href="demo.html">Open the starter deck</a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <span>MIT © 2026 Jeremy Fritzhand</span>
+    <span>
+      <a href="https://github.com/fritzhand/site2deck/blob/main/docs/method.md">Method</a> ·
+      <a href="https://github.com/fritzhand/site2deck/blob/main/docs/components.md">Components</a> ·
+      <a href="https://github.com/fritzhand/site2deck/blob/main/docs/website-requirements.md">Requirements</a> ·
+      <a href="https://github.com/fritzhand/site2deck/blob/main/prompts/build-my-skin.md">AI prompt</a>
+    </span>
+  </footer>
+</div>
+
+<script>
+(function () {
+  var SKINS = {
+    starter: {
+      domain: 'starter.example',
+      lines: [
+        ['[ok] stylesheets   3 collected', 120],
+        ['[ok] colors        primary <b>#0E6B63</b> (from --brand-teal)', 190],
+        ['[ok] fonts         system stacks (starter ships zero binaries)', 150],
+        ['→ decks/starter/tokens.css', 120],
+      ],
+    },
+    grove: {
+      domain: 'greengrocer.example',
+      lines: [
+        ['[ok] stylesheets   5 collected', 120],
+        ['[ok] colors        primary <b>#D97014</b> (from .btn-primary, theme-color)', 190],
+        ['[ok] fonts         2 families self-hosted → fonts/', 150],
+        ['→ decks/greengrocer/tokens.css', 120],
+      ],
+    },
+    pulse: {
+      domain: 'deeptech.example',
+      lines: [
+        ['[ok] stylesheets   8 collected', 120],
+        ['[ok] colors        primary <b>#7B3FD6</b> (framework defaults excluded)', 190],
+        ['[ok] fonts         1 variable family → fonts/', 150],
+        ['→ decks/deeptech/tokens.css', 120],
+      ],
+    },
+  };
+  var term = document.getElementById('term');
+  var chips = Array.prototype.slice.call(document.querySelectorAll('.chip-btn'));
+  var reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var timer = null;
+
+  function render(skin, animate) {
+    var s = SKINS[skin];
+    var all = ['<span class="cmdline">$ node extract.mjs https://' + s.domain + '</span>'];
+    s.lines.forEach(function (l) { all.push('<span class="ok">' + l[0] + '</span>'); });
+    if (timer) { clearTimeout(timer); timer = null; }
+    if (!animate || reduced) { term.innerHTML = all.join('\n'); return; }
+    var i = 1;
+    term.innerHTML = all[0];
+    function step() {
+      term.innerHTML = all.slice(0, i + 1).join('\n');
+      i++;
+      if (i <= s.lines.length) timer = setTimeout(step, s.lines[i - 1] ? s.lines[i - 1][1] : 130);
+    }
+    timer = setTimeout(step, 160);
+  }
+
+  chips.forEach(function (c) {
+    c.addEventListener('click', function () {
+      var skin = c.getAttribute('data-skin');
+      if (skin === 'starter') { document.documentElement.removeAttribute('data-skin'); }
+      else { document.documentElement.setAttribute('data-skin', skin); }
+      chips.forEach(function (o) { o.setAttribute('aria-pressed', String(o === c)); });
+      render(skin, true);
+    });
+  });
+
+  render('starter', false);
+
+  document.querySelectorAll('[data-copy]').forEach(function (b) {
+    b.addEventListener('click', function () {
+      navigator.clipboard.writeText(b.getAttribute('data-copy')).then(function () {
+        b.textContent = 'COPIED';
+        setTimeout(function () { b.textContent = 'COPY'; }, 1400);
+      });
+    });
+  });
+})();
+</script>
+</body>
+</html>
