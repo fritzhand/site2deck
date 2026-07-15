@@ -4,6 +4,14 @@
   "description": "Turn any company website into a branded, offline, single-file HTML slide-deck builder: extract the site's design system, skin a shared deck engine with it, and iterate by eye.",
   "type": "module",
   "license": "MIT",
+  "homepage": "https://fritzhand.github.io/site2deck/",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/fritzhand/site2deck.git"
+  },
+  "bugs": {
+    "url": "https://github.com/fritzhand/site2deck/issues"
+  },
   "engines": {
     "node": ">=18"
   },
@@ -15,11 +23,21 @@
   "keywords": [
     "slides",
     "presentation",
+    "slideshow",
+    "pitch-deck",
     "deck",
+    "html-presentation",
     "design-tokens",
+    "design-system",
     "brand",
+    "branding",
     "scraper",
+    "web-scraping",
+    "single-file",
     "standalone-html",
-    "pdf-export"
+    "offline-first",
+    "zero-dependencies",
+    "pdf-export",
+    "css-custom-properties"
   ]
 }

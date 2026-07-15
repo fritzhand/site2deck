@@ -1,12 +1,36 @@
+<div align="center">
+
 # site2deck
 
-Turn any company website into a branded, offline, single-file HTML slide-deck builder.
+**Turn any company website into a branded, offline, single-file HTML slide deck.**
 
-**Website:** [fritzhand.github.io/site2deck](https://fritzhand.github.io/site2deck/) · **Live demo:** [the starter deck](https://fritzhand.github.io/site2deck/demo.html)
+Point it at a site → get its colors, fonts, logo, and icons as a `tokens.css` skin → author slides on a brand-neutral engine → build **one standalone HTML file** that opens from `file://`, travels as an email attachment, and prints to PDF.
 
-Point `extract.mjs` at a company's site and you get a deck project dressed in that company's own design system — its exact colors, its webfont self-hosted, its logo, its icon set — sitting on a brand-neutral 1280×720 deck engine. You author slides in a small component vocabulary, then build the deck into **one self-contained HTML file**: it opens from `file://` with zero network access, travels as a single email attachment, and prints to PDF at exactly 1280×720 per page.
+[**Website**](https://fritzhand.github.io/site2deck/) · [**Live demo**](https://fritzhand.github.io/site2deck/demo.html) · [**Component catalog**](docs/components.md) · [**The method**](docs/method.md)
 
-The method has been proven twice in real client work. This repo packages it.
+[![Use this template](https://img.shields.io/badge/Use%20this%20template-238636?style=for-the-badge&logo=github&logoColor=white)](https://github.com/fritzhand/site2deck/generate)
+
+![Node ≥ 18](https://img.shields.io/badge/node-%E2%89%A5%2018-5FA04E?style=flat-square&logo=nodedotjs&logoColor=white)
+![Zero dependencies](https://img.shields.io/badge/dependencies-zero-0E6B63?style=flat-square)
+![Output: one HTML file](https://img.shields.io/badge/output-one%20HTML%20file-B4562B?style=flat-square)
+![License: MIT](https://img.shields.io/badge/license-MIT-44518F?style=flat-square)
+
+<br>
+
+<a href="https://fritzhand.github.io/site2deck/demo.html"><img src="docs/screenshots/slide-cover.png" alt="The starter deck's cover slide — the deck engine wearing its neutral skin" width="840"></a>
+
+*The starter deck, wearing the engine's neutral skin. Every deck starts here; a brand's `tokens.css` re-dresses the whole thing.*
+
+</div>
+
+## What it looks like
+
+Four slides from the [live starter deck](https://fritzhand.github.io/site2deck/demo.html) — stat tiles, the card family, photo cards, icon feature rows. Same markup, any brand: the skin is ~40 CSS custom properties.
+
+| | |
+| --- | --- |
+| ![Stat tiles and the dark banner register](docs/screenshots/slide-stats.png) | ![The accent card family](docs/screenshots/slide-cards.png) |
+| ![Photo cards with accent washes](docs/screenshots/slide-photo.png) | ![Icon feature rows without an icon font](docs/screenshots/slide-features.png) |
 
 ## How it works
 
@@ -35,6 +59,8 @@ decks/acme/acme-standalone.html  one file — file:// · email · print-to-PDF
 ## Quickstart
 
 Requirements: Node ≥ 18. No `npm install` — there are no dependencies.
+
+> **Starting fresh?** Click [**Use this template**](https://github.com/fritzhand/site2deck/generate) to spin up your own copy of this repo — decks you author stay in your repo, and the starter deck comes along as a live reference.
 
 ```bash
 git clone https://github.com/fritzhand/site2deck && cd site2deck
@@ -91,7 +117,8 @@ site2deck/
 ├── docs/
 │   ├── method.md            # why the method works
 │   ├── components.md        # the slide-authoring vocabulary
-│   └── website-requirements.md  # what extract.mjs needs from a site
+│   ├── website-requirements.md  # what extract.mjs needs from a site
+│   └── screenshots/         # README + social-preview images
 ├── prompts/
 │   └── build-my-skin.md     # paste-into-an-AI prompt for skin refinement
 └── CLAUDE.md                # instructions for AI coding agents working in this repo
@@ -115,7 +142,7 @@ Generated `*-standalone.html` / `*-public.html` files are git-ignored — they a
 
 **Component vocabulary.** Slides compose a fixed set of classes — stat tiles, accent cards, photo cards, roadmap lanes, icon feature rows, device frames — all consuming the same tokens, so every slide stays on-brand by construction. The full catalog with markup for each: [docs/components.md](docs/components.md).
 
-**The method.** Why sampling beats guessing, why tokens are the only brand surface, why single-file is a design constraint and not just a convenience: [docs/method.md](docs/method.md).
+**The method.** Why sampling beats guessing, why tokens are the only brand surface, why single-file is a design constraint and not just a convenience: [docs/method.md](docs/method.md). The approach has been proven twice in real client work; this repo packages it.
 
 ## Honest limitations
 
